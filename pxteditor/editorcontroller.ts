@@ -33,7 +33,8 @@ namespace pxt.editor {
         /**
          * Request action
          */
-        action: "switchblocks"
+        action: "updatefilters"
+        | "updateblocks"
         | "switchjavascript"
         | "startsimulator"
         | "restartsimulator"
@@ -308,7 +309,12 @@ namespace pxt.editor {
                             switch (req.action.toLowerCase()) {
                                 case "switchjavascript": return Promise.resolve().then(() => projectView.openJavaScript());
                                 case "switchpython": return Promise.resolve().then(() => projectView.openPython());
-                                case "switchblocks": return Promise.resolve().then(() => projectView.openBlocks());
+                                case "updateblocks": return Promise.resolve().then(() => projectView.openBlocks());
+                                case "updatefilters": return Promise.resolve()
+                                  .then(() => {
+                                    const editorState = msg.data.editor as EditorSyncState
+                                    projectView.updateFilters(editorState)
+                                  })
                                 case "startsimulator": return Promise.resolve().then(() => projectView.startSimulator());
                                 case "restartsimulator": return Promise.resolve().then(() => projectView.restartSimulator());
                                 case "hidesimulator": return Promise.resolve().then(() => projectView.collapseSimulator());
